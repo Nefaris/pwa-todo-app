@@ -1,5 +1,5 @@
 {
-  "name": "todo-ios-app",
+  "name": "todo-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
-    "vue": "^2.6.10"
+    "onsenui": "^2.10.8",
+    "vue": "^2.6.10",
+    "vue-onsenui": "^2.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
