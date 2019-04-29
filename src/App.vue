@@ -5,11 +5,14 @@
     </v-ons-toolbar>
 
     <div class="searchField">
-      <v-ons-search-input
-        class="searchInput"
-        placeholder="Search something"
-        v-model="filter"
-      ></v-ons-search-input>
+      <div class="searchControls">
+        <div class="clearSearch" @click="clearSearch">Clear</div>
+        <v-ons-search-input
+          class="searchInput"
+          placeholder="Search something"
+          v-model="filter"
+        ></v-ons-search-input>
+      </div>
       <div v-if="filter">Filter: {{ filter || 'none' }}</div>
     </div>
 
@@ -23,16 +26,21 @@
           class="list-item"
           tappable v-for="(item, index) in items"
           :key="item.id"
-          :class="{ done: item.done, hidden: !item.name.includes(filter) }"
+          :class="{
+            done: item.done,
+            hidden: !item.name.toLowerCase().includes(filter.toLowerCase())
+          }"
         >
           <div class="itemText" @click="scratchItem(index)">{{ item.name }}</div>
+          <div class="editButton" @click="editItem(index, item.name)">Edit</div>
           <div class="deleteButton" @click="removeItem(index)">Delete</div>
         </v-ons-list-item>
       </transition-group>
     </v-ons-list>
 
     <v-ons-fab @click="addItem" position="bottom right">
-      <i class="fa-plus"></i>
+      <!-- <i class="fa-plus"></i> -->
+      +
     </v-ons-fab>
 
   </v-ons-page>
@@ -50,18 +58,39 @@ export default {
   },
   methods: {
     addItem() {
-      this.$ons.notification.prompt('Enter task here', { title: 'Add item' })
+      this.$ons.notification.prompt('Enter task here', {
+        title: 'Add item', cancelable: true, autofocus: true, submitOnEnter: true, buttonLabels: 'Add',
+      })
         .then((response) => {
-          this.items.push({ id: this.id, name: response, done: false });
-          this.id += 1;
+          if (response.length > 0 && response != null) {
+            this.items.push({
+              id: this.id, name: response.trim(), done: false,
+            });
+            this.id += 1;
+            // hide keyboard
+            document.getElementsByTagName('body')[0].focus();
+          }
         });
     },
-    removeItem(id) {
-      this.items.splice(id, 1);
+    removeItem(index) {
+      this.items.splice(index, 1);
     },
-    scratchItem(id) {
-      if (!this.items[id].done) this.items[id].done = true;
-      else this.items[id].done = false;
+    scratchItem(index) {
+      if (!this.items[index].done) this.items[index].done = true;
+      else this.items[index].done = false;
+    },
+    editItem(index, name) {
+      this.$ons.notification.prompt(name, {
+        title: 'Edit item', cancelable: true, defaultValue: name, autofocus: true, submitOnEnter: true, buttonLabels: 'Save',
+      })
+        .then((response) => {
+          if (response.length > 0 && response != null) {
+            this.items[index].name = response.trim();
+          }
+        });
+    },
+    clearSearch() {
+      this.filter = '';
     },
   },
 };
@@ -91,8 +120,20 @@ body {
   align-items: center;
 }
 
-.searchInput {
+.searchControls {
+  display: flex;
+  align-items: center;
   margin-bottom: 10px;
+}
+
+.searchInput {
+  font-size: 16px;
+}
+
+.clearSearch {
+  color: #0076ff;
+  padding: 5px 15px;
+  font-size: 1.15em;
 }
 
 .done {
@@ -115,15 +156,14 @@ body {
   width: calc(100% - 70px);
 }
 
-.deleteButton {
+.deleteButton,
+.editButton {
   display: flex;
   width: 70px;
   height: 100%;
   position: absolute;
   top: 0;
-  right: 0;
   z-index: 1;
-  background: #f00;
   color: #fff;
   justify-content: center;
   align-items: center;
@@ -131,5 +171,15 @@ body {
   font-size: .8em;
   border-top: solid 1px #ccc;
   border-bottom: solid 1px #ccc;
+}
+
+.deleteButton {
+  background: #f00;
+  right: 0;
+}
+
+.editButton {
+  background: orangered;
+  right: 70px;
 }
 </style>
