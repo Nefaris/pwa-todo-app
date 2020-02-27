@@ -1,5 +1,5 @@
 <template>
-  <v-ons-page>
+  <v-ons-page class="app-wrapper">
     <v-ons-toolbar>
       <div class="center">Todo list</div>
     </v-ons-toolbar>
@@ -110,6 +110,18 @@ export default {
 body {
   margin: 0;
   padding: 0;
+}
+
+.app-wrapper {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+@media (min-width: 420px) {
+    .app-wrapper {
+        border-left: solid 1px #ccc;
+        border-right: solid 1px #ccc;
+    }
 }
 
 .searchField {
