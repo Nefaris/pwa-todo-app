@@ -4,6 +4,7 @@ import VueOnsen from 'vue-onsenui';
 
 import Vue from 'vue';
 import App from './App.vue';
+import './registerServiceWorker';
 
 Vue.use(VueOnsen);
 

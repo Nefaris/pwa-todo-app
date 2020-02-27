@@ -1,29 +1,4 @@
-# todo-ios-app
+# Vue.js PWA application
+Simple todo application designed  for android/iOS that supports PWA.
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Live demo: https://youthful-sinoussi-3263ac.netlify.com
